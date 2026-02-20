@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Üniversite ders programı yönetim uygulaması - Derslik, ders ve sınav zamanlama">
+    <title>Ders Programı Yönetimi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <h1>📅 Ders Programı Yönetimi</h1>
+            <p>Derslik, ders ve sınav zamanlama sistemi</p>
+        </header>
+
+        <!-- STATS -->
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <div class="stat-value" id="statClassrooms">0</div>
+                <div class="stat-label">Derslik</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statDepartments">0</div>
+                <div class="stat-label">Bölüm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statCourses">0</div>
+                <div class="stat-label">Ders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statExams">0</div>
+                <div class="stat-label">Sınav</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statScheduled">0</div>
+                <div class="stat-label">Programlanan</div>
+            </div>
+        </div>
+
+        <!-- TAB NAVIGATION -->
+        <nav class="tab-navigation" id="tabNav">
+            <button class="tab-btn active" data-tab="classrooms">
+                <span class="tab-icon">🏫</span>
+                <span class="tab-text">Derslikler</span>
+            </button>
+            <button class="tab-btn" data-tab="departments">
+                <span class="tab-icon">🏛️</span>
+                <span class="tab-text">Bölümler</span>
+            </button>
+            <button class="tab-btn" data-tab="courses">
+                <span class="tab-icon">📚</span>
+                <span class="tab-text">Dersler</span>
+            </button>
+            <button class="tab-btn" data-tab="exams">
+                <span class="tab-icon">📝</span>
+                <span class="tab-text">Sınavlar</span>
+            </button>
+            <button class="tab-btn" data-tab="schedule">
+                <span class="tab-icon">📅</span>
+                <span class="tab-text">Program</span>
+            </button>
+            <button class="tab-btn" data-tab="templates">
+                <span class="tab-icon">💾</span>
+                <span class="tab-text">Şablonlar</span>
+            </button>
+        </nav>
+
+        <!-- ===================== TAB: DERSLİKLER ===================== -->
+        <div class="tab-content active" id="tab-classrooms">
+            <div class="card">
+                <div class="card-title"><span class="icon">➕</span> Yeni Derslik Ekle</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Derslik Adı</label>
+                        <input type="text" id="classroomName" placeholder="Örn: A101">
+                    </div>
+                    <div class="form-group">
+                        <label>Kapasite</label>
+                        <input type="number" id="classroomCapacity" placeholder="Örn: 50" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Bölüm</label>
+                        <select id="classroomDepartment">
+                            <option value="">Genel Kullanım</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Özellikler</label>
+                        <input type="text" id="classroomFeatures" placeholder="Projeksiyon, Lab, vb. (virgülle ayırın)">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btnAddClassroom">➕ Derslik Ekle</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="icon">📋</span> Derslik Listesi</div>
+                <table class="data-table" id="classroomTable">
+                    <thead>
+                        <tr>
+                            <th>Ad</th>
+                            <th>Kapasite</th>
+                            <th>Bölüm</th>
+                            <th>Özellikler</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classroomTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="classroomEmpty">
+                    <div class="empty-icon">🏫</div>
+                    <p>Henüz derslik eklenmedi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== TAB: BÖLÜMLER ===================== -->
+        <div class="tab-content" id="tab-departments">
+            <div class="card">
+                <div class="card-title"><span class="icon">➕</span> Yeni Bölüm Ekle</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Bölüm Adı</label>
+                        <input type="text" id="departmentName" placeholder="Örn: Bilgisayar Mühendisliği">
+                    </div>
+                    <div class="form-group">
+                        <label>Bölüm Kodu</label>
+                        <input type="text" id="departmentCode" placeholder="Örn: BM">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btnAddDepartment">➕ Bölüm Ekle</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="icon">📋</span> Bölüm Listesi</div>
+                <table class="data-table" id="departmentTable">
+                    <thead>
+                        <tr>
+                            <th>Bölüm Adı</th>
+                            <th>Kod</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="departmentTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="departmentEmpty">
+                    <div class="empty-icon">🏛️</div>
+                    <p>Henüz bölüm eklenmedi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== TAB: DERSLER ===================== -->
+        <div class="tab-content" id="tab-courses">
+            <div class="card">
+                <div class="card-title"><span class="icon">➕</span> Yeni Ders Ekle</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ders Adı</label>
+                        <input type="text" id="courseName" placeholder="Örn: Matematik I">
+                    </div>
+                    <div class="form-group">
+                        <label>Öğretim Görevlisi</label>
+                        <input type="text" id="courseInstructor" placeholder="Örn: Prof. Dr. Ahmet Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label>Bölüm</label>
+                        <select id="courseDepartment">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Haftalık Saat</label>
+                        <input type="number" id="courseWeeklyHours" placeholder="Örn: 3" min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Öğrenci Sayısı</label>
+                        <input type="number" id="courseStudentCount" placeholder="Örn: 40" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Sınıf</label>
+                        <select id="courseYear">
+                            <option value="1">1. Sınıf</option>
+                            <option value="2">2. Sınıf</option>
+                            <option value="3">3. Sınıf</option>
+                            <option value="4">4. Sınıf</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btnAddCourse">➕ Ders Ekle</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="icon">📋</span> Ders Listesi</div>
+                <table class="data-table" id="courseTable">
+                    <thead>
+                        <tr>
+                            <th>Ders Adı</th>
+                            <th>Öğretim Görevlisi</th>
+                            <th>Bölüm</th>
+                            <th>Sınıf</th>
+                            <th>Haftalık Saat</th>
+                            <th>Öğrenci</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="courseEmpty">
+                    <div class="empty-icon">📚</div>
+                    <p>Henüz ders eklenmedi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== TAB: SINAVLAR ===================== -->
+        <div class="tab-content" id="tab-exams">
+            <div class="card">
+                <div class="card-title"><span class="icon">➕</span> Yeni Sınav Ekle</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ders</label>
+                        <select id="examCourse">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gün</label>
+                        <select id="examDay">
+                            <option value="Pazartesi">Pazartesi</option>
+                            <option value="Salı">Salı</option>
+                            <option value="Çarşamba">Çarşamba</option>
+                            <option value="Perşembe">Perşembe</option>
+                            <option value="Cuma">Cuma</option>
+                            <option value="Cumartesi">Cumartesi</option>
+                            <option value="Pazar">Pazar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Başlangıç Saati</label>
+                        <input type="time" id="examStartTime" value="09:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Süre (dakika)</label>
+                        <input type="number" id="examDuration" placeholder="Örn: 90" min="15" value="90">
+                    </div>
+                    <div class="form-group">
+                        <label>Derslik</label>
+                        <select id="examClassroom">
+                            <option value="">Otomatik Ata</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tarih (Opsiyonel)</label>
+                        <input type="date" id="examDate">
+                    </div>
+                </div>
+                <button class="btn btn-danger" id="btnAddExam">📝 Sınav Ekle</button>
+
+                <!-- Suggestion box -->
+                <div class="suggestion-box" id="examSuggestions" style="display:none;">
+                    <div class="suggestion-title">💡 Uygun Derslikler</div>
+                    <div id="examSuggestionList"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="icon">📋</span> Sınav Listesi</div>
+                <table class="data-table" id="examTable">
+                    <thead>
+                        <tr>
+                            <th>Ders</th>
+                            <th>Gün</th>
+                            <th>Saat</th>
+                            <th>Süre</th>
+                            <th>Derslik</th>
+                            <th>Tarih</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="examTableBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="examEmpty">
+                    <div class="empty-icon">📝</div>
+                    <p>Henüz sınav eklenmedi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== TAB: PROGRAM ===================== -->
+        <div class="tab-content" id="tab-schedule">
+            <div class="card">
+                <div class="card-title"><span class="icon">⚙️</span> Filtreler & Ayarlar</div>
+
+                <div class="schedule-controls">
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Derslik Filtresi</label>
+                        <select id="scheduleFilterClassroom">
+                            <option value="all">Tüm Derslikler</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Bölüm Filtresi</label>
+                        <select id="scheduleFilterDepartment">
+                            <option value="all">Tüm Bölümler</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Görünüm</label>
+                        <select id="scheduleView">
+                            <option value="weekday">Hafta İçi</option>
+                            <option value="weekend">Hafta Sonu</option>
+                            <option value="all">Tümü</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;"></div>
+                    <button class="btn btn-success" id="btnAutoSchedule">🤖 Otomatik Yerleştir</button>
+                </div>
+            </div>
+
+            <!-- Add course to schedule manually -->
+            <div class="card">
+                <div class="card-title"><span class="icon">📌</span> Manuel Ders Yerleştir</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Ders</label>
+                        <select id="manualCourse">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gün</label>
+                        <select id="manualDay">
+                            <option value="Pazartesi">Pazartesi</option>
+                            <option value="Salı">Salı</option>
+                            <option value="Çarşamba">Çarşamba</option>
+                            <option value="Perşembe">Perşembe</option>
+                            <option value="Cuma">Cuma</option>
+                            <option value="Cumartesi">Cumartesi</option>
+                            <option value="Pazar">Pazar</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Başlangıç Saati</label>
+                        <select id="manualStartTime">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Derslik</label>
+                        <select id="manualClassroom">
+                            <option value="">Otomatik Öner</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="btnManualSchedule">📌 Yerleştir</button>
+                    <button class="btn btn-warning" id="btnFindBest">💡 En Uygun Sınıfı Bul</button>
+                </div>
+                <div class="suggestion-box" id="scheduleSuggestions" style="display:none;">
+                    <div class="suggestion-title">💡 Önerilen Derslikler</div>
+                    <div id="scheduleSuggestionList"></div>
+                </div>
+            </div>
+
+            <!-- DERS PROGRAMI -->
+            <div class="card" id="courseScheduleCard">
+                <div class="card-title" style="justify-content:space-between;">
+                    <span><span class="icon">📚</span> Ders Programı</span>
+                    <button class="btn btn-primary btn-sm" id="btnDownloadCoursePDF">📄 Ders Programı PDF İndir</button>
+                </div>
+                <div id="courseScheduleContainer"></div>
+            </div>
+
+            <!-- SINAV PROGRAMI -->
+            <div class="card" id="examScheduleCard">
+                <div class="card-title" style="justify-content:space-between;">
+                    <span><span class="icon">📝</span> Sınav Programı</span>
+                    <button class="btn btn-danger btn-sm" id="btnDownloadExamPDF">📄 Sınav Programı PDF İndir</button>
+                </div>
+                <div id="examScheduleContainer"></div>
+            </div>
+        </div>
+
+        <!-- ===================== TAB: ŞABLONLAR ===================== -->
+        <div class="tab-content" id="tab-templates">
+            <div class="card">
+                <div class="card-title"><span class="icon">💾</span> Şablon Kaydet</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Şablon Adı</label>
+                        <input type="text" id="templateName" placeholder="Örn: 2024 Güz Dönemi">
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <input type="text" id="templateDescription" placeholder="Kısa açıklama...">
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success" id="btnSaveTemplate">💾 Şablon Kaydet</button>
+                    <button class="btn btn-primary" id="btnExportJSON">📤 JSON Dışa Aktar</button>
+                    <button class="btn btn-warning" id="btnImportJSON">📥 JSON İçe Aktar</button>
+                    <input type="file" id="importFileInput" accept=".json" style="display:none;">
+                </div>
+            </div>
+
+            <!-- PDF İndirme -->
+            <div class="card">
+                <div class="card-title"><span class="icon">📄</span> PDF İndir</div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="btnDownloadCoursePDF2">📚 Ders Programı PDF İndir</button>
+                    <button class="btn btn-danger" id="btnDownloadExamPDF2">📝 Sınav Programı PDF İndir</button>
+                </div>
+            </div>
+
+            <!-- Öğrenci Programı -->
+            <div class="card">
+                <div class="card-title"><span class="icon">🎓</span> Öğrenci Ders Programı</div>
+                <p style="color:var(--text-secondary);margin-bottom:16px;font-size:0.9rem;">Bölüm ve sınıfa göre öğrenci
+                    ders programı oluşturun ve PDF olarak indirin.</p>
+                <div class="schedule-controls">
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Bölüm</label>
+                        <select id="studentScheduleDepartment">
+                            <option value="">Seçiniz...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Sınıf</label>
+                        <select id="studentScheduleYear">
+                            <option value="all">Tüm Sınıflar</option>
+                            <option value="1">1. Sınıf</option>
+                            <option value="2">2. Sınıf</option>
+                            <option value="3">3. Sınıf</option>
+                            <option value="4">4. Sınıf</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 0 0 auto;">
+                        <label>Görünüm</label>
+                        <select id="studentScheduleView">
+                            <option value="weekday">Hafta İçi</option>
+                            <option value="weekend">Hafta Sonu</option>
+                            <option value="all">Tümü</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;"></div>
+                    <button class="btn btn-success" id="btnShowStudentSchedule">👀 Göster</button>
+                    <button class="btn btn-primary" id="btnDownloadStudentPDF">📄 Öğrenci PDF İndir</button>
+                </div>
+                <div id="studentScheduleContainer" style="margin-top:16px;"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="icon">📋</span> Kayıtlı Şablonlar</div>
+                <div class="template-list" id="templateList">
+                </div>
+                <div class="empty-state" id="templateEmpty">
+                    <div class="empty-icon">💾</div>
+                    <p>Henüz şablon kaydedilmedi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <div class="modal-title" id="modalTitle"></div>
+            <div id="modalBody"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
